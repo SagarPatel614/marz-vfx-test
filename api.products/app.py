@@ -1,11 +1,25 @@
 from flask import Flask
+from api.blueprints.products import products_blueprint
+from api.models import db
+
+_URL_PREFIX = '/api'
+PRODUCTS_URL = f"{_URL_PREFIX}/products"
 
 app = Flask(__name__)
 
 
-@app.route("/")
-def home():
-    return "Products API Home"
+@app.before_request
+def before_request():
+    db.connect()
+
+
+@app.after_request
+def after_request(response):
+    db.close()
+    return response
+
+
+app.register_blueprint(products_blueprint, url_prefix=PRODUCTS_URL)
 
 
 if __name__ == '__main__':
