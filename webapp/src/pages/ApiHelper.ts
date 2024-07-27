@@ -73,4 +73,22 @@ const getProductsData = async () => {
     return { productData, errorOccured };
 };
 
-export { getInPipelineData, INPIPELINE_URL, updateOrderStatus, UPDATE_STATUS_URL, getProductsData, PRODUCT_URL };
+const UPDATE_PRODUCT_STATUS_URL = '/api/products/update_status';
+
+const updateProductStatus = async (product: Product, newProductStatus: string) => {
+    const updatedProduct = { ...product, ProductStatus: newProductStatus };
+    let productStatusUpdated = false;
+    try {
+        const response = await axios.post(UPDATE_PRODUCT_STATUS_URL, updatedProduct);
+        if (response?.status === 200) productStatusUpdated = true;
+        else {
+            const { message } = response.data;
+            throw message;
+        }
+    } catch(err) {
+        console.error(err);
+    }
+    return productStatusUpdated;
+};
+
+export { getInPipelineData, INPIPELINE_URL, updateOrderStatus, UPDATE_STATUS_URL, getProductsData, PRODUCT_URL, updateProductStatus, UPDATE_PRODUCT_STATUS_URL };

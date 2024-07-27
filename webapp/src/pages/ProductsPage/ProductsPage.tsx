@@ -3,7 +3,7 @@ import PageWrapper from '../PageWrapper';
 import { Product, ProductData } from "../../components/interfaces";
 import Spinner from "../../components/Spinner/Spinner";
 import { DragDropContext } from "react-beautiful-dnd";
-import { getProductsData } from "../ApiHelper";
+import { getProductsData, updateProductStatus } from "../ApiHelper";
 import DraggableProductList from "../../components/DraggableProductList/DraggableProductList";
 
 const DATA_STATES = {
@@ -24,7 +24,18 @@ const ProductsPage = () => {
   };
 
   const updateProduct = async (product: Product) => {
-    // TODO: Handle the update to the product details upon the change in the list?
+    setLoadingState(DATA_STATES.waiting);
+    const newProductStatus = product.ProductStatus === 'InActive' ? 'Active' : 'InActive';
+    const productStatusUpdated = await updateProductStatus(product, newProductStatus);
+    if (productStatusUpdated) {
+      const columnKey = product.ProductStatus as keyof ProductData
+      setData({
+        ...data,
+        [columnKey]: data[columnKey].filter(
+          (otherproduct: Product) => otherproduct.ProductID !== product.ProductID
+        ),
+      });
+    }
     setLoadingState(DATA_STATES.loaded);
   };
 
