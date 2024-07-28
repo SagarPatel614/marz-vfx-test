@@ -28,7 +28,7 @@ const ProductList = (props: ProductData) => {
     const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4" data-testid={`container-product-list-search`}>
             <div className="mb-4">
                 <input
                     type="text"
@@ -38,12 +38,12 @@ const ProductList = (props: ProductData) => {
                     onChange={handleSearchChange}
                 />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" data-testid={`container-product-list`}>
                 {paginatedProducts.map(product => (
                     <ProductItem key={product.ProductID} {...product} />
                 ))}
             </div>
-            <div className="mt-4 flex justify-center">
+            <div className="mt-4 flex justify-center" data-testid={`container-product-list-pagination`}>
                 {Array.from({ length: Math.ceil(filteredProducts.length / itemsPerPage) }, (_, index) => (
                     <button
                         key={index}
