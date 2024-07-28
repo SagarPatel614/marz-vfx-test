@@ -42,18 +42,10 @@ export interface Product {
 }
 
 export interface ProductData {
-    Active: Product[];
-    InActive: Product[];
+    products: Product[];
 }
 
-export interface DraggableProductProps extends Product{
-    draggableProvided: DraggableProvided;
-    updateStatus: (product: Product) => void;
+export interface AllProductData {
+    Active: ProductData;
+    InActive: ProductData;
 }
-
-export interface DraggableProductsListProps {
-    ID: string;
-    listTitle: string;
-    updateStatus: (product: Product) => void;
-    items: Product[];
-};

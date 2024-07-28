@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PageWrapper from '../PageWrapper';
-import { Product, ProductData } from "../../components/interfaces";
+import { AllProductData } from "../../components/interfaces";
 import Spinner from "../../components/Spinner/Spinner";
-import { DragDropContext } from "react-beautiful-dnd";
-import { getProductsData, updateProductStatus } from "../ApiHelper";
-import DraggableProductList from "../../components/DraggableProductList/DraggableProductList";
+import { getProductsData } from "../ApiHelper";
+import ProductList from "../../components/ProductList/ProductList";
 
 const DATA_STATES = {
   waiting: 'WAITING',
@@ -14,33 +13,13 @@ const DATA_STATES = {
 
 const ProductsPage = () => {
   const [loadingState, setLoadingState] = useState(DATA_STATES.waiting);
-  const [data, setData] = useState({Active: [], InActive: []} as ProductData);
+  const [data, setData] = useState({Active: {products: []}, InActive: {products: []}} as AllProductData);
 
   const getProducts = async () => {
     setLoadingState(DATA_STATES.waiting);
     const { productData, errorOccured } = await getProductsData();
     setData(productData);
     setLoadingState(errorOccured ? DATA_STATES.error : DATA_STATES.loaded);
-  };
-
-  const updateProduct = async (product: Product) => {
-    setLoadingState(DATA_STATES.waiting);
-    const newProductStatus = product.ProductStatus === 'InActive' ? 'Active' : 'InActive';
-    const productStatusUpdated = await updateProductStatus(product, newProductStatus);
-    if (productStatusUpdated) {
-      const columnKey = product.ProductStatus as keyof ProductData
-      setData({
-        ...data,
-        [columnKey]: data[columnKey].filter(
-          (otherproduct: Product) => otherproduct.ProductID !== product.ProductID
-        ),
-      });
-    }
-    setLoadingState(DATA_STATES.loaded);
-  };
-
-  const handleDragEnd = (result: any) => {
-    // TODO: upon drag complete update the status of the product
   };
 
   useEffect(() => {
@@ -62,22 +41,9 @@ const ProductsPage = () => {
       <div
         className="flex flex-row justify-center w-full pt-4"
         data-testid="pipeline-container"
-        
       >
-        {<DragDropContext onDragEnd={handleDragEnd}>
-          <DraggableProductList 
-            ID='0'
-            listTitle='Active'
-            updateStatus={(product: Product) => updateProduct(product)}
-            items={data.Active}
-          />
-          <DraggableProductList 
-            ID='1'
-            listTitle='InActive'
-            updateStatus={(product: Product) => updateProduct(product)}
-            items={data.InActive}
-          />
-        </DragDropContext> }
+        <h2 className="text-2xl font-bold mb-4">Active Products</h2>
+        <ProductList {...data.Active} />
       </div>
     );
   else

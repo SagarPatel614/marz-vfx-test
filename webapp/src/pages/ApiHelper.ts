@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Order, OrderData, Product, ProductData } from "../components/interfaces";
+import { AllProductData, Order, OrderData, Product } from "../components/interfaces";
 
 const INPIPELINE_URL = '/api/orders/inpipeline';
 
@@ -50,9 +50,9 @@ const updateOrderStatus = async (order: Order, newOrderStatus: string) => {
 const PRODUCT_URL = '/api/products/all';
 
 const getProductsData = async () => {
-    const productData: ProductData = {
-      Active: [],
-      InActive: [],
+    const productData: AllProductData = {
+      Active: {products: []},
+      InActive: {products: []},
     };
     let errorOccured = false;
     try {
@@ -60,7 +60,7 @@ const getProductsData = async () => {
       if (response?.status === 200) {
         const { data } = response.data;
         data.forEach((product: Product) => {
-          productData[product.ProductStatus as keyof ProductData].push(product);
+          productData[product.ProductStatus as keyof AllProductData].products.push(product);
         });
       } else {
         const { message } = response.data;
