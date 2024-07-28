@@ -33,3 +33,19 @@ export interface HeaderLink {
 export interface HeaderProps {
     links: HeaderLink[];
 }
+
+export interface Product {
+    ProductID: number;
+    ProductName: string;
+    ProductPhotoURL: string;
+    ProductStatus: 'Active' | 'InActive';
+}
+
+export interface ProductData {
+    products: Product[];
+}
+
+export interface AllProductData {
+    Active: ProductData;
+    InActive: ProductData;
+}
