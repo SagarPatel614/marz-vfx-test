@@ -1,20 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageWrapper from '../PageWrapper';
+import { AllProductData } from "../../components/interfaces";
+import Spinner from "../../components/Spinner/Spinner";
+import { getProductsData } from "../ApiHelper";
+import ProductList from "../../components/ProductList/ProductList";
+
+const DATA_STATES = {
+  waiting: 'WAITING',
+  loaded: 'LOADED',
+  error: 'ERROR'
+};
 
 const ProductsPage = () => {
-  /*
-    TODO:
-      When the drag ends we want to keep the status persistant across logins. 
-      Instead of modifying the data locally we want to do it serverside via a post
-      request
-  */
+  const [loadingState, setLoadingState] = useState(DATA_STATES.waiting);
+  const [data, setData] = useState({Active: {products: []}, InActive: {products: []}} as AllProductData);
+
+  const getProducts = async () => {
+    setLoadingState(DATA_STATES.waiting);
+    const { productData, errorOccured } = await getProductsData();
+    setData(productData);
+    setLoadingState(errorOccured ? DATA_STATES.error : DATA_STATES.loaded);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  let content;
+  if (loadingState === DATA_STATES.waiting)
+    content = (
+      <div
+        className="flex flex-row justify-center w-full pt-4"
+        data-testid="loading-spinner-container"
+      >
+        <Spinner />
+      </div>
+    );
+  else if (loadingState === DATA_STATES.loaded) 
+    content = (
+      <div
+        className="flex flex-col justify-center w-full pt-4 bg-neutral-500"
+        data-testid="pipeline-container"
+      >
+        <h2 className="text-2xl font-bold mb-4">Active Products</h2>
+        <ProductList {...data.Active} />
+      </div>
+    );
+  else
+    content = (
+      <div
+        className="flex flex-row justify-center w-full pt-4 text-3xl font-bold text-white"
+        data-testid="error-container"
+      >
+        An error occured fetching the data!
+      </div>
+    );
+
   return (
     <PageWrapper>
-      <h1 className="text-3xl font-bold text-white">
-        Product Page Goes Here
-      </h1>
+      { content }
     </PageWrapper>
   );
 };
 
-export default ProductsPage
+export default ProductsPage;

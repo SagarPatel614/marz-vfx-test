@@ -1,0 +1,25 @@
+swagger: '2.0'
+info:
+  title: Product API Service
+  version: '1.0'
+
+definitions:
+  Product:
+    type: object
+    properties:
+      ProductID:
+        type: integer
+        description: The unique identifier for a product
+        example: 123
+      ProductName:
+        type: string
+        description: The name of the product
+        example: Test
+      ProductPhotoURL:
+        type: string
+        description: The URL of the product photo
+        example: https://picsum.photos/id/25
+      ProductStatus:
+        type: string
+        description: The status of the product (e.g., Active, InActive)
+        example: Active | InActive
