@@ -3,7 +3,7 @@ from flask import Flask
 from peewee import SqliteDatabase
 from api.models import Product
 
-_TABLES = Product
+_TABLES = [Product]
 
 
 @fixture()

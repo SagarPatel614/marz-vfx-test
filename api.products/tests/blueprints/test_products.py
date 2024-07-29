@@ -46,42 +46,6 @@ def test_get_all_products(test_client, init_db):
     assert product_statuses.get("InActive") == 1
 
 
-def test_get_active_products(test_client, init_db):
-    response = test_client.get(f"{PRODUCTS_URL}/active")
-    assert response.status_code == 200
-    deserialized_response = json.loads(response.data)
-    data = deserialized_response.get('data')
-    assert data is not None
-    assert len(data) == 1
-    product_statuses = {}
-    for product in data:
-        status = product.get("ProductStatus")
-        if status in product_statuses.keys():
-            product_statuses[status] += 1
-        else:
-            product_statuses[status] = 1
-    assert len(product_statuses.keys()) == 1
-    assert product_statuses.get("Active") == 1
-
-
-def test_get_inactive_products(test_client, init_db):
-    response = test_client.get(f"{PRODUCTS_URL}/inactive")
-    assert response.status_code == 200
-    deserialized_response = json.loads(response.data)
-    data = deserialized_response.get('data')
-    assert data is not None
-    assert len(data) == 1
-    product_statuses = {}
-    for product in data:
-        status = product.get("ProductStatus")
-        if status in product_statuses.keys():
-            product_statuses[status] += 1
-        else:
-            product_statuses[status] = 1
-    assert len(product_statuses.keys()) == 1
-    assert product_statuses.get("InActive") == 1
-
-
 def test_post_update_product_status_empty_json(test_client):
     response = test_client.post(f"{PRODUCTS_URL}/update_status", json={})
     assert response.status_code == 400

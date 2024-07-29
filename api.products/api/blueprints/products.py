@@ -132,7 +132,7 @@ def post_update_product_status():
     product_schema = ProductSchema()
     json_data = request.get_json()
     if not json_data:
-        return { 'message': 'No order data provided!' }, 400
+        return { 'message': 'No product data provided!' }, 400
     try:
         product = product_schema.load(json_data)
         Product.update(**product).where(
