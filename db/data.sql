@@ -146,13 +146,13 @@ LOCK TABLES `Product` WRITE;
 INSERT INTO
   `Product`
 VALUES
-  (1, 'Hat', 'https://picsum.photos/200', 'Active'),
-  (2, 'Shoes', 'https://picsum.photos/200', 'Active'),
-  (3, 'Pants', 'https://picsum.photos/200', 'Active'),
+  (1, 'Hat', 'https://picsum.photos/id/57/600/400', 'Active'),
+  (2, 'Shoes', 'https://picsum.photos/id/21/600/400', 'Active'),
+  (3, 'Pants', 'https://picsum.photos/id/81/600/400', 'Active'),
   (
     4,
     'Shirt',
-    'https://picsum.photos/200',
+    'https://picsum.photos/id/101/600/400',
     'InActive'
   ),
   (
