@@ -39,7 +39,7 @@ const ProductsPage = () => {
   else if (loadingState === DATA_STATES.loaded) 
     content = (
       <div
-        className="flex flex-row justify-center w-full pt-4"
+        className="flex flex-col justify-center w-full pt-4 bg-neutral-500"
         data-testid="pipeline-container"
       >
         <h2 className="text-2xl font-bold mb-4">Active Products</h2>

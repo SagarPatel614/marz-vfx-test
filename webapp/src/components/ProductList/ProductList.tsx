@@ -28,8 +28,8 @@ const ProductList = (props: ProductData) => {
     const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div className="container mx-auto p-4" data-testid={`container-product-list-search`}>
-            <div className="mb-4">
+        <div className="container mx-auto p-4 bg-white dark:bg-neutral-500">
+            <div className="mb-4" data-testid={`container-product-list-search`}>
                 <input
                     type="text"
                     placeholder="Search products..."
@@ -47,7 +47,7 @@ const ProductList = (props: ProductData) => {
                 {Array.from({ length: Math.ceil(filteredProducts.length / itemsPerPage) }, (_, index) => (
                     <button
                         key={index}
-                        className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                        className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-blue-500 text-slate-900 dark:text-white' : 'bg-gray-300'}`}
                         onClick={() => handlePageChange(index + 1)}
                     >
                         {index + 1}
