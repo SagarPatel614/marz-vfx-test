@@ -1,4 +1,5 @@
 from flask import Flask
+from flasgger import Swagger
 from api.blueprints.products import products_blueprint
 from api.models import db
 
@@ -6,6 +7,15 @@ _URL_PREFIX = '/api'
 PRODUCTS_URL = f"{_URL_PREFIX}/products"
 
 app = Flask(__name__)
+# Configure the Swagger documentation URL
+app.config['SWAGGER'] = {
+    'title': 'Product API',
+    'uiversion': 3,
+    'swagger_ui': True,
+    'specs_route': '/productapidocs/'
+}
+
+Swagger(app, template_file='/api.products/swagger_docs/swagger_config.yml')
 
 
 @app.before_request
